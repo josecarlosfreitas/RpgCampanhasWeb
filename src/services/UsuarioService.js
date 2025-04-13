@@ -16,9 +16,14 @@ const getAllMestres = () => {
   return axios.get(`${API_URL}/usuario/mestres`);
 };
 
+const getAllJogadores = () => {
+  return axios.get(`${API_URL}/usuario/jogadores`);
+};
+
 const UsuarioService = {
   register,
   getAllMestres,
+  getAllJogadores,
 };
 
 export default UsuarioService;

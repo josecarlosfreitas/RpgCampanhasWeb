@@ -18,8 +18,8 @@ const deleteCampanha = (id) => {
   return axios.delete(`${API_URL}/campanha/${id}`);
 };
 
-const getAllMestres = () => {
-  return axios.get(`${API_URL}/usuario/mestres`);
+const getById = (id) => {
+  return axios.get(`${API_URL}/campanha/${id}`);
 };
 
 const CampanhaService = {
@@ -27,7 +27,7 @@ const CampanhaService = {
   create,
   update,
   delete: deleteCampanha,
-  getAllMestres,
+  getById,
 };
 
 export default CampanhaService;
