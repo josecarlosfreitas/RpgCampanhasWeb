@@ -1,0 +1,41 @@
+html,
+body {
+  margin: 0;
+  padding: 0;
+  height: 100%;
+  width: 100%;
+  overflow: hidden;
+}
+
+.home-fullscreen-wrapper {
+  position: relative;
+  width: 100vw;
+  height: 100vh;
+  overflow: hidden;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.home-background-image {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  z-index: -1;
+}
+
+.home-content {
+  z-index: 1;
+  text-align: center;
+  color: white;
+}
+
+/* Responsivo */
+@media (max-width: 600px) {
+  .home-content {
+    padding: 0 16px;
+  }
+}

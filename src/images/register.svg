@@ -1,0 +1,174 @@
+<svg viewBox="0 0 1200 800" xmlns="http://www.w3.org/2000/svg">
+  <!-- Definições de gradientes e padrões -->
+  <defs>
+    <!-- Gradiente de fundo com cores fantasiosas -->
+    <linearGradient id="bgGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#1a1a2e" />
+      <stop offset="50%" stop-color="#16213e" />
+      <stop offset="100%" stop-color="#0f3460" />
+    </linearGradient>
+    
+    <!-- Padrão para textura de pergaminho -->
+    <pattern id="parchmentPattern" width="200" height="200" patternUnits="userSpaceOnUse">
+      <rect width="200" height="200" fill="#e2d2b2" />
+      <path d="M0 0 L200 200 M200 0 L0 200" stroke="#d5c4a1" stroke-width="2" stroke-opacity="0.3" />
+    </pattern>
+    
+    <!-- Filtro para brilho das estrelas -->
+    <filter id="glow" x="-50%" y="-50%" width="200%" height="200%">
+      <feGaussianBlur stdDeviation="2" result="blur" />
+      <feComposite in="SourceGraphic" in2="blur" operator="over" />
+    </filter>
+  </defs>
+  
+  <!-- Fundo principal -->
+  <rect width="1200" height="800" fill="url(#bgGradient)" />
+  
+  <!-- Estrelas distantes no fundo -->
+  <g id="stars">
+    <!-- Pequenas estrelas -->
+    <g fill="#fff" filter="url(#glow)">
+      <circle cx="120" cy="45" r="1" />
+      <circle cx="220" cy="170" r="1.2" />
+      <circle cx="340" cy="95" r="0.8" />
+      <circle cx="450" cy="42" r="1" />
+      <circle cx="550" cy="180" r="0.9" />
+      <circle cx="670" cy="90" r="1.1" />
+      <circle cx="750" cy="30" r="0.7" />
+      <circle cx="880" cy="110" r="1" />
+      <circle cx="990" cy="170" r="0.9" />
+      <circle cx="1050" cy="60" r="1.2" />
+      <circle cx="1150" cy="120" r="0.8" />
+      <!-- Adiciona mais estrelas em posições diferentes -->
+      <circle cx="150" cy="245" r="1" />
+      <circle cx="320" cy="370" r="0.7" />
+      <circle cx="420" cy="295" r="1.1" />
+      <circle cx="550" cy="342" r="0.9" />
+      <circle cx="650" cy="280" r="1" />
+      <circle cx="770" cy="390" r="0.8" />
+      <circle cx="850" cy="330" r="1.2" />
+      <circle cx="980" cy="310" r="0.9" />
+      <circle cx="1100" cy="370" r="1" />
+      <circle cx="1170" cy="320" r="0.7" />
+      <!-- Mais estrelas espalhadas -->
+      <circle cx="100" cy="500" r="0.9" />
+      <circle cx="210" cy="610" r="1" />
+      <circle cx="350" cy="520" r="1.1" />
+      <circle cx="470" cy="580" r="0.7" />
+      <circle cx="590" cy="650" r="0.8" />
+      <circle cx="720" cy="490" r="1" />
+      <circle cx="810" cy="570" r="0.9" />
+      <circle cx="920" cy="630" r="1.2" />
+      <circle cx="1040" cy="510" r="0.8" />
+      <circle cx="1130" cy="590" r="1" />
+    </g>
+    
+    <!-- Estrelas médias e brilhantes -->
+    <g fill="#fff" filter="url(#glow)">
+      <circle cx="250" cy="120" r="2" opacity="0.8" />
+      <circle cx="600" cy="80" r="2.2" opacity="0.9" />
+      <circle cx="850" cy="150" r="1.8" opacity="0.7" />
+      <circle cx="1100" cy="70" r="2.1" opacity="0.8" />
+      <circle cx="400" cy="180" r="2" opacity="0.7" />
+      <circle cx="540" cy="420" r="2.1" opacity="0.8" />
+      <circle cx="780" cy="520" r="1.9" opacity="0.7" />
+      <circle cx="950" cy="450" r="2.2" opacity="0.9" />
+      <circle cx="300" cy="530" r="2" opacity="0.8" />
+      <circle cx="650" cy="580" r="1.8" opacity="0.7" />
+    </g>
+  </g>
+  
+  <!-- Montanhas ao fundo -->
+  <g id="mountains">
+    <!-- Montanhas mais distantes -->
+    <path d="M0 650 L150 480 L300 590 L420 450 L550 520 L680 400 L820 510 L950 440 L1050 530 L1200 450 L1200 800 L0 800 Z" fill="#2a2a3a" />
+    <!-- Montanhas médias -->
+    <path d="M0 680 L120 560 L220 630 L370 540 L500 610 L650 520 L780 600 L900 520 L1080 630 L1200 550 L1200 800 L0 800 Z" fill="#252536" />
+    <!-- Montanhas mais próximas -->
+    <path d="M0 700 L100 630 L180 680 L300 600 L400 670 L520 610 L650 680 L800 580 L950 670 L1100 600 L1200 650 L1200 800 L0 800 Z" fill="#1e1e2f" />
+  </g>
+  
+  <!-- Névoa leve entre as montanhas -->
+  <path d="M0 650 C200 640, 400 670, 600 650 C800 630, 1000 670, 1200 650 L1200 800 L0 800 Z" fill="rgba(30, 50, 100, 0.15)" />
+  
+  <!-- Elementos de RPG -->
+  <!-- Pergaminho antigo -->
+  <g transform="translate(100, 450) scale(0.8)">
+    <path d="M0 100 C0 50, 200 0, 400 50 C600 0, 800 50, 800 100 L800 400 C800 450, 600 500, 400 450 C200 500, 0 450, 0 400 Z" fill="url(#parchmentPattern)" stroke="#b2a18b" stroke-width="3" opacity="0.8" />
+    <!-- Linhas decorativas do pergaminho -->
+    <path d="M100 150 L700 150 M100 200 L700 200 M100 250 L700 250 M100 300 L700 300 M100 350 L700 350" stroke="#b2a18b" stroke-width="1.5" stroke-opacity="0.5" />
+  </g>
+  
+  <!-- Dados de RPG -->
+  <!-- D20 -->
+  <g transform="translate(900, 500) scale(0.7)">
+    <path d="M100 0 L0 70 L0 210 L100 280 L200 210 L200 70 Z" fill="#6a3b9c" stroke="#fff" stroke-width="3" />
+    <text x="100" y="150" font-family="Arial" font-size="80" font-weight="bold" fill="white" text-anchor="middle">20</text>
+  </g>
+  
+  <!-- D8 -->
+  <g transform="translate(780, 480) scale(0.4)">
+    <path d="M100 0 L0 100 L100 200 L200 100 Z" fill="#3b689c" stroke="#fff" stroke-width="3" />
+    <text x="100" y="115" font-family="Arial" font-size="70" font-weight="bold" fill="white" text-anchor="middle">8</text>
+  </g>
+  
+  <!-- D6 -->
+  <g transform="translate(1000, 480) scale(0.4)">
+    <rect x="50" y="50" width="100" height="100" fill="#9c3b3b" stroke="#fff" stroke-width="3" />
+    <text x="100" y="115" font-family="Arial" font-size="70" font-weight="bold" fill="white" text-anchor="middle">6</text>
+  </g>
+  
+  <!-- Espada decorativa -->
+  <g transform="translate(600, 350) rotate(-30) scale(0.8)">
+    <!-- Lâmina -->
+    <path d="M0 0 L0 300 L30 350 L-30 350 L0 300 Z" fill="#a0a0a0" stroke="#606060" stroke-width="2" />
+    <!-- Guarda da espada -->
+    <rect x="-60" y="350" width="120" height="20" fill="#704214" stroke="#503010" stroke-width="2" />
+    <!-- Cabo -->
+    <rect x="-15" y="370" width="30" height="80" fill="#503010" stroke="#302010" stroke-width="2" />
+    <!-- Pommel -->
+    <circle cx="0" cy="460" r="20" fill="#8b7546" stroke="#503010" stroke-width="2" />
+  </g>
+  
+  <!-- Poção mágica -->
+  <g transform="translate(300, 550) scale(0.5)">
+    <path d="M50 0 L50 50 L0 150 C0 200, 100 200, 100 150 L50 50" fill="#9c3b9c" fill-opacity="0.7" stroke="#fff" stroke-width="3" />
+    <ellipse cx="50" cy="150" rx="50" ry="20" fill="#9c3b9c" fill-opacity="0.9" stroke="#fff" stroke-width="3" />
+    <ellipse cx="50" cy="0" rx="20" ry="10" fill="none" stroke="#fff" stroke-width="3" />
+    <!-- Brilho da poção -->
+    <circle cx="30" cy="120" r="10" fill="#fff" fill-opacity="0.6" />
+    <circle cx="60" cy="90" r="5" fill="#fff" fill-opacity="0.5" />
+  </g>
+  
+  <!-- Mapa antigo -->
+  <g transform="translate(470, 500) rotate(10) scale(0.4)">
+    <rect x="0" y="0" width="300" height="200" fill="#d5c4a1" stroke="#b2a18b" stroke-width="3" />
+    <!-- Detalhes do mapa -->
+    <path d="M50 50 C100 20, 150 70, 200 30" stroke="#7d5a38" stroke-width="3" fill="none" />
+    <path d="M70 100 C120 70, 170 120, 220 80" stroke="#7d5a38" stroke-width="3" fill="none" />
+    <path d="M40 150 C90 120, 140 170, 190 130" stroke="#7d5a38" stroke-width="3" fill="none" />
+    <circle cx="200" cy="50" r="15" fill="none" stroke="#7d5a38" stroke-width="2" />
+    <text x="200" y="55" font-family="Arial" font-size="20" font-weight="bold" fill="#7d5a38" text-anchor="middle">X</text>
+  </g>
+  
+  <!-- Símbolos mágicos flutuantes -->
+  <g id="magicSymbols" opacity="0.5">
+    <g transform="translate(150, 200) rotate(15)">
+      <circle cx="0" cy="0" r="30" fill="none" stroke="#9c3b9c" stroke-width="2" />
+      <path d="M0 -30 L0 30 M-30 0 L30 0" stroke="#9c3b9c" stroke-width="2" />
+      <circle cx="0" cy="0" r="15" fill="none" stroke="#9c3b9c" stroke-width="2" />
+    </g>
+    <g transform="translate(950, 200) rotate(-10)">
+      <rect x="-20" y="-20" width="40" height="40" fill="none" stroke="#3b689c" stroke-width="2" />
+      <circle cx="0" cy="0" r="25" fill="none" stroke="#3b689c" stroke-width="2" />
+      <path d="M-20 -20 L20 20 M-20 20 L20 -20" stroke="#3b689c" stroke-width="2" />
+    </g>
+    <g transform="translate(550, 150) rotate(5)">
+      <polygon points="0,-30 28,15 -28,15" fill="none" stroke="#9c5a3b" stroke-width="2" />
+      <circle cx="0" cy="0" r="20" fill="none" stroke="#9c5a3b" stroke-width="2" />
+    </g>
+  </g>
+  
+  <!-- Névoa atmosférica -->
+  <rect width="1200" height="800" fill="url(#bgGradient)" fill-opacity="0.1" />
+</svg>
