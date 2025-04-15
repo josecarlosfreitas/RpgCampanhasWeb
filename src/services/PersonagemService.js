@@ -11,7 +11,7 @@ const create = (personagem) => {
 };
 
 const update = (id, personagem) => {
-  return axios.put(`${API_URL}/personagem/${id}`, personagem);
+  return axios.put(`${API_URL}/personagem/${id}`, { ...personagem, jogadorNome: '' });
 };
 
 const deletePersonagem = (id) => {

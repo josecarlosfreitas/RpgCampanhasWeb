@@ -21,7 +21,7 @@ import {
   InputLabel,
 } from '@mui/material';
 import UsuarioService from '../../services/UsuarioService';
-import { useParams } from 'react-router-dom';
+import { Link, useParams } from 'react-router-dom';
 import PersonagemService from '../../services/PersonagemService';
 
 function PersonagemCampanha() {
@@ -29,7 +29,6 @@ function PersonagemCampanha() {
   const [personagens, setPersonagens] = useState([]);
   const [openDialog, setOpenDialog] = useState(false);
   const [newPersonagem, setNewPersonagem] = useState({ nome: '', jogadorId: '' });
-  const [editPersonagem, setEditPersonagem] = useState(null);
   const [jogadores, setJogadores] = useState([]);
 
   useEffect(() => {
@@ -62,7 +61,6 @@ function PersonagemCampanha() {
   const handleCloseDialog = () => {
     setOpenDialog(false);
     setNewPersonagem({ nome: '', jogadorId: '' });
-    setEditPersonagem(null);
   };
 
   const handleInputChange = (event) => {
@@ -76,22 +74,6 @@ function PersonagemCampanha() {
       handleCloseDialog();
     } catch (error) {
       console.error('Erro ao criar personagem:', error);
-    }
-  };
-
-  const handleEditPersonagem = (personagem) => {
-    setEditPersonagem(personagem);
-    setNewPersonagem({ nome: personagem.nome, jogadorId: personagem.jogadorId });
-    handleOpenDialog();
-  };
-
-  const handleUpdatePersonagem = async () => {
-    try {
-      await PersonagemService.update(editPersonagem.id, newPersonagem);
-      fetchPersonagens();
-      handleCloseDialog();
-    } catch (error) {
-      console.error('Erro ao atualizar personagem:', error);
     }
   };
 
@@ -128,7 +110,12 @@ function PersonagemCampanha() {
                 <TableCell>{personagem.nome}</TableCell>
                 <TableCell>{personagem.jogadorNome}</TableCell>
                 <TableCell>
-                  <Button variant="outlined" color="primary" onClick={() => handleEditPersonagem(personagem)}>
+                  <Button
+                    variant="outlined"
+                    color="primary"
+                    component={Link}
+                    to={`/campanha/editar/${id}/personagem/${personagem.id}`}
+                  >
                     Editar
                   </Button>
                   <Button variant="outlined" color="secondary" onClick={() => handleDeletePersonagem(personagem.id)}>
@@ -141,7 +128,7 @@ function PersonagemCampanha() {
         </Table>
       </TableContainer>
       <Dialog open={openDialog} onClose={handleCloseDialog}>
-        <DialogTitle>{editPersonagem ? 'Editar Personagem' : 'Criar Personagem'}</DialogTitle>
+        <DialogTitle>Criar Personagem</DialogTitle>
         <DialogContent>
           <TextField
             label="Nome"
@@ -171,12 +158,8 @@ function PersonagemCampanha() {
         </DialogContent>
         <DialogActions>
           <Button onClick={handleCloseDialog}>Cancelar</Button>
-          <Button
-            variant="contained"
-            color="primary"
-            onClick={editPersonagem ? handleUpdatePersonagem : handleCreatePersonagem}
-          >
-            {editPersonagem ? 'Atualizar' : 'Criar'}
+          <Button variant="contained" color="primary" onClick={handleCreatePersonagem}>
+            Criar
           </Button>
         </DialogActions>
       </Dialog>

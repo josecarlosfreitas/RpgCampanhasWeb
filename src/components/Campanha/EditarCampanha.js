@@ -7,6 +7,7 @@ import FullScreenBackground from '../FullScreenBackground/FullScreenBackground';
 import backgroundFundo from '../../images/fundoCampanha.png';
 import { TabContext, TabList, TabPanel } from '@mui/lab';
 import PersonagemCampanha from '../PersonagemCampanha/PersonagemCampanha';
+import Menu from '../Menu/Menu';
 
 function EditarCampanha() {
   const { id } = useParams();
@@ -56,74 +57,77 @@ function EditarCampanha() {
   };
 
   return (
-    <FullScreenBackground imageUrl={backgroundFundo}>
-      <Typography variant="h4" component="h1" gutterBottom>
-        Editar Campanha
-      </Typography>
-      <Box
-        component="form"
-        onSubmit={(e) => {
-          e.preventDefault();
-          handleUpdateCampanha();
-        }}
-      >
-        <TextField
-          label="Nome"
-          name="nome"
-          value={editCampanha.nome}
-          onChange={handleInputChange}
-          fullWidth
-          margin="normal"
-        />
-        <TextField
-          label="Descrição"
-          name="descricao"
-          value={editCampanha.descricao}
-          onChange={handleInputChange}
-          fullWidth
-          margin="normal"
-        />
-        <FormControl fullWidth margin="normal">
-          <InputLabel id="mestre-label">Mestre</InputLabel>
-          <Select
-            labelId="mestre-label"
-            id="mestreId"
-            name="mestreId"
-            value={editCampanha.mestreId}
+    <>
+      <Menu />
+      <FullScreenBackground imageUrl={backgroundFundo}>
+        <Typography variant="h4" component="h1" gutterBottom>
+          Editar Campanha
+        </Typography>
+        <Box
+          component="form"
+          onSubmit={(e) => {
+            e.preventDefault();
+            handleUpdateCampanha();
+          }}
+        >
+          <TextField
+            label="Nome"
+            name="nome"
+            value={editCampanha.nome}
             onChange={handleInputChange}
-            label="Mestre"
-          >
-            {mestres.map((mestre) => (
-              <MenuItem key={mestre.id} value={mestre.id}>
-                {mestre.nome}
-              </MenuItem>
-            ))}
-          </Select>
-        </FormControl>
-        <Button variant="contained" color="primary" type="submit">
-          Atualizar
-        </Button>
-      </Box>
-      <Box sx={{ width: '100%', typography: 'body1', mt: 2 }}>
-        <TabContext value={value}>
-          <Box sx={{ borderBottom: 1, borderColor: 'divider' }}>
-            <TabList onChange={handleChange} aria-label="tabs">
-              <Tab label="Personagens" value="1" />
-              <Tab label="Histórias" value="2" />
-              <Tab label="NPCs" value="3" />
-              <Tab label="Locais" value="4" />
-            </TabList>
-          </Box>
-          <TabPanel value="1">
-            {' '}
-            <PersonagemCampanha />
-          </TabPanel>
-          <TabPanel value="2">Histórias</TabPanel>
-          <TabPanel value="3">NPCs</TabPanel>
-          <TabPanel value="4">Locais</TabPanel>
-        </TabContext>
-      </Box>
-    </FullScreenBackground>
+            fullWidth
+            margin="normal"
+          />
+          <TextField
+            label="Descrição"
+            name="descricao"
+            value={editCampanha.descricao}
+            onChange={handleInputChange}
+            fullWidth
+            margin="normal"
+          />
+          <FormControl fullWidth margin="normal">
+            <InputLabel id="mestre-label">Mestre</InputLabel>
+            <Select
+              labelId="mestre-label"
+              id="mestreId"
+              name="mestreId"
+              value={editCampanha.mestreId}
+              onChange={handleInputChange}
+              label="Mestre"
+            >
+              {mestres.map((mestre) => (
+                <MenuItem key={mestre.id} value={mestre.id}>
+                  {mestre.nome}
+                </MenuItem>
+              ))}
+            </Select>
+          </FormControl>
+          <Button variant="contained" color="primary" type="submit">
+            Atualizar
+          </Button>
+        </Box>
+        <Box sx={{ width: '100%', typography: 'body1', mt: 2 }}>
+          <TabContext value={value}>
+            <Box sx={{ borderBottom: 1, borderColor: 'divider' }}>
+              <TabList onChange={handleChange} aria-label="tabs">
+                <Tab label="Personagens" value="1" />
+                <Tab label="Histórias" value="2" />
+                <Tab label="NPCs" value="3" />
+                <Tab label="Locais" value="4" />
+              </TabList>
+            </Box>
+            <TabPanel value="1">
+              {' '}
+              <PersonagemCampanha />
+            </TabPanel>
+            <TabPanel value="2">Histórias</TabPanel>
+            <TabPanel value="3">NPCs</TabPanel>
+            <TabPanel value="4">Locais</TabPanel>
+          </TabContext>
+        </Box>
+      </FullScreenBackground>
+    </>
   );
 }
 

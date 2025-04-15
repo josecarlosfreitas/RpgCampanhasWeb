@@ -1,0 +1,43 @@
+/* src/components/CriarFicha3det.module.css */
+
+.fichaContainer {
+  /*background-image: url('../../images/fundo-ficha.png');*/
+  background-size: cover; /* Cobrir todo o container */
+  background-repeat: no-repeat;
+  padding: 40px; /* Ajuste o preenchimento conforme necessário */
+  /* Adicione outros estilos básicos do container, se precisar */
+  position: relative; /* Para posicionar as bordas relativas a ele */
+}
+
+/* Estilos para os campos de entrada */
+.campo {
+  margin-bottom: 15px; /* Espaçamento entre os campos */
+  /* Outros estilos para os campos, como cor da fonte, fundo transparente, etc. */
+}
+
+.campo label {
+  display: block; /* Para que o label fique acima do input */
+  margin-bottom: 5px;
+  /* Estilos para o label */
+}
+
+.campo input[type='number'],
+.campo textarea {
+  width: 100%;
+  padding: 8px;
+  border: 1px solid #ccc; /* Borda simples para os campos */
+  /* Remova o fundo padrão se quiser transparência */
+  background-color: transparent;
+  color: #333; /* Cor da fonte dos campos */
+  box-sizing: border-box; /* Para que padding e border não aumentem o tamanho total */
+}
+
+/* Posicionamento específico dos campos (exemplo) */
+.statsGrid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(80px, 1fr)); /* Exemplo de layout em grid para os atributos */
+  gap: 10px;
+  margin-bottom: 20px;
+}
+
+/* ... Adicione mais estilos para posicionar os campos exatamente como na ficha original ... */
