@@ -69,7 +69,14 @@ function PersonagemCampanha() {
 
   const handleCreatePersonagem = async () => {
     try {
-      await PersonagemService.create({ ...newPersonagem, campanhaId: id, mestreNome: '', id: 0, jogadorNome: '' });
+      await PersonagemService.create({
+        ...newPersonagem,
+        campanhaId: id,
+        mestreNome: '',
+        id: 0,
+        jogadorNome: '',
+        imagePath: '',
+      });
       fetchPersonagens();
       handleCloseDialog();
     } catch (error) {

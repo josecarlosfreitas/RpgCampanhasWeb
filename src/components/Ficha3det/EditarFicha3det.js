@@ -1,5 +1,15 @@
 import React, { useState, useEffect } from 'react';
-import { Box, Typography, TextField, Button, Grid, Paper, Divider, Tab } from '@mui/material';
+import {
+  Box,
+  Typography,
+  TextField,
+  Button,
+  Grid,
+  Paper,
+  Divider,
+  Tab,
+  Avatar, // Importe o Avatar
+} from '@mui/material';
 import { TabContext, TabList, TabPanel } from '@mui/lab';
 import { useParams, useNavigate } from 'react-router-dom';
 import Ficha3detService from '../../services/Ficha3detService';
@@ -11,6 +21,7 @@ import AutoFixHighIcon from '@mui/icons-material/AutoFixHigh';
 import MenuBookIcon from '@mui/icons-material/MenuBook';
 import SportsKabaddiIcon from '@mui/icons-material/SportsKabaddi';
 import Menu from '../Menu/Menu';
+import ImageService from '../../services/ImageService';
 
 function EditarFicha3det() {
   const { id, personagemId, fichaId } = useParams();
@@ -36,7 +47,9 @@ function EditarFicha3det() {
     desvantagens: '',
     personagemId: parseInt(personagemId, 10),
     npcId: null,
+    imagePath: '', // Adicione o campo imagePath ao estado da ficha
   });
+  const [selectedImage, setSelectedImage] = useState(null);
 
   useEffect(() => {
     fetchFicha();
@@ -58,9 +71,33 @@ function EditarFicha3det() {
     setFicha({ ...ficha, [name]: value });
   };
 
+  const handleImageChange = (event) => {
+    setSelectedImage(event.target.files[0]);
+  };
+
+  const uploadImage = async () => {
+    if (!selectedImage) return;
+
+    const formData = new FormData();
+    formData.append('EntityType', 'ficha3det');
+    formData.append('EntityId', fichaId);
+    formData.append('File', selectedImage);
+
+    try {
+      const response = await ImageService.uploadImage(formData);
+      setFicha({ ...ficha, imagePath: response.data.imagePath });
+      setSelectedImage(null);
+    } catch (error) {
+      console.error('Erro ao fazer upload da imagem:', error);
+    }
+  };
+
   const handleSalvarFicha = async () => {
     try {
       await Ficha3detService.update(fichaId, ficha);
+      if (selectedImage) {
+        await uploadImage();
+      }
       navigate(`/campanha/editar/${id}/personagem/${personagemId}`);
     } catch (error) {
       console.error('Erro ao salvar alterações na ficha 3DeT:', error);
@@ -102,21 +139,56 @@ function EditarFicha3det() {
             Editar Ficha de Personagem - 3D&T Alpha
           </Typography>
 
-          {/* Cabeçalho com nome e pontos */}
-          <Grid container spacing={2} sx={{ mb: 3 }}>
-            <Grid item xs={9}>
+          {/* Cabeçalho com nome, pontos e avatar */}
+          <Grid container spacing={2} alignItems="center" sx={{ mb: 3 }}>
+            <Grid item xs={12} md={6}>
               <TextField
                 fullWidth
                 label="Nome do Personagem"
                 name="nome"
                 value={ficha.nome}
                 onChange={handleInputChange}
+                size="small"
+                margin="normal"
+              />
+              <TextField
+                fullWidth
+                label="Pontos"
+                name="pontos"
+                value={ficha.pontos}
+                onChange={handleInputChange}
+                size="small"
+                margin="normal"
               />
             </Grid>
-            <Grid item xs={3}>
-              <TextField fullWidth label="Pontos" name="pontos" value={ficha.pontos} onChange={handleInputChange} />
+            <Grid item xs={12} md={6} sx={{ display: 'flex', justifyContent: 'flex-end' }}>
+              <Avatar
+                alt={ficha.nome}
+                src={ficha.imagePath ? `${process.env.REACT_APP_API_URL.replace('/api', '')}/${ficha.imagePath}` : ''}
+                sx={{ width: 120, height: 120 }}
+              />
             </Grid>
           </Grid>
+
+          <Box mt={2}>
+            <input
+              accept="image/*"
+              style={{ display: 'none' }}
+              id="raised-button-file"
+              type="file"
+              onChange={handleImageChange}
+            />
+            <label htmlFor="raised-button-file">
+              <Button variant="outlined" color="primary" component="span">
+                Selecionar Nova Imagem
+              </Button>
+            </label>
+            {selectedImage && (
+              <Typography variant="body2" sx={{ ml: 2 }}>
+                {selectedImage.name}
+              </Typography>
+            )}
+          </Box>
 
           <TabContext value={tab}>
             <Box sx={{ borderBottom: 1, borderColor: 'divider', mb: 2 }}>
