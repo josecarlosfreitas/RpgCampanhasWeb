@@ -26,6 +26,10 @@ const getByPersonagemId = (id) => {
   return axios.get(`${API_URL}/ficha3det/personagem/${id}`);
 };
 
+const getByNpcId = (id) => {
+  return axios.get(`${API_URL}/ficha3det/npc/${id}`);
+};
+
 const Ficha3detService = {
   getAll,
   create,
@@ -33,6 +37,7 @@ const Ficha3detService = {
   delete: deleteFicha3det,
   getById,
   getByPersonagemId,
+  getByNpcId,
 };
 
 export default Ficha3detService;

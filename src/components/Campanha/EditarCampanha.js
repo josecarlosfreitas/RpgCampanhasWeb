@@ -1,13 +1,28 @@
 import React, { useState, useEffect } from 'react';
-import { Typography, Button, TextField, Box, Select, MenuItem, FormControl, InputLabel, Tab } from '@mui/material';
+import {
+  Typography,
+  Button,
+  TextField,
+  Box,
+  Select,
+  MenuItem,
+  FormControl,
+  InputLabel,
+  Tab,
+  IconButton,
+} from '@mui/material';
 import Campanhaservice from '../../services/CampanhaService';
 import Usuarioservice from '../../services/UsuarioService';
-import { useNavigate, useParams } from 'react-router-dom';
+import { Link, useNavigate, useParams } from 'react-router-dom';
 import FullScreenBackground from '../FullScreenBackground/FullScreenBackground';
 import backgroundFundo from '../../images/fundoCampanha.png';
 import { TabContext, TabList, TabPanel } from '@mui/lab';
 import PersonagemCampanha from '../PersonagemCampanha/PersonagemCampanha';
 import Menu from '../Menu/Menu';
+import HistoriaCampanha from '../HistoriaCampanha/HistoriaCampanha';
+import NpcCampanha from '../NpcCampanha/NpcCampanha';
+import ArrowBackIcon from '@mui/icons-material/ArrowBack';
+import LocalCampanha from '../LocalCampanha/LocalCampanha';
 
 function EditarCampanha() {
   const { id } = useParams();
@@ -56,58 +71,75 @@ function EditarCampanha() {
     setValue(newValue);
   };
 
+  const getVoltarLink = () => {
+    return `/campanha`;
+  };
+
   return (
     <>
       <Menu />
       <FullScreenBackground imageUrl={backgroundFundo}>
-        <Typography variant="h4" component="h1" gutterBottom>
-          Editar Campanha
-        </Typography>
         <Box
-          component="form"
-          onSubmit={(e) => {
-            e.preventDefault();
-            handleUpdateCampanha();
+          sx={{
+            width: '100%',
+            margin: '20px auto',
+            padding: 4,
+            bgcolor: 'rgba(255, 255, 255, 0.9)',
+            borderRadius: 2,
+            boxShadow: '0 4px 8px rgba(0, 0, 0, 0.1)',
           }}
         >
-          <TextField
-            label="Nome"
-            name="nome"
-            value={editCampanha.nome}
-            onChange={handleInputChange}
-            fullWidth
-            margin="normal"
-          />
-          <TextField
-            label="Descrição"
-            name="descricao"
-            value={editCampanha.descricao}
-            onChange={handleInputChange}
-            fullWidth
-            margin="normal"
-          />
-          <FormControl fullWidth margin="normal">
-            <InputLabel id="mestre-label">Mestre</InputLabel>
-            <Select
-              labelId="mestre-label"
-              id="mestreId"
-              name="mestreId"
-              value={editCampanha.mestreId}
+          <Typography variant="h4" component="h1" gutterBottom>
+            <IconButton component={Link} to={getVoltarLink()} color="primary">
+              <ArrowBackIcon />
+            </IconButton>
+            Editar Campanha
+          </Typography>
+          <Box
+            component="form"
+            onSubmit={(e) => {
+              e.preventDefault();
+              handleUpdateCampanha();
+            }}
+          >
+            <TextField
+              label="Nome"
+              name="nome"
+              value={editCampanha.nome}
               onChange={handleInputChange}
-              label="Mestre"
-            >
-              {mestres.map((mestre) => (
-                <MenuItem key={mestre.id} value={mestre.id}>
-                  {mestre.nome}
-                </MenuItem>
-              ))}
-            </Select>
-          </FormControl>
-          <Button variant="contained" color="primary" type="submit">
-            Atualizar
-          </Button>
-        </Box>
-        <Box sx={{ width: '100%', typography: 'body1', mt: 2 }}>
+              fullWidth
+              margin="normal"
+            />
+            <TextField
+              label="Descrição"
+              name="descricao"
+              value={editCampanha.descricao}
+              onChange={handleInputChange}
+              fullWidth
+              margin="normal"
+            />
+            <FormControl fullWidth margin="normal">
+              <InputLabel id="mestre-label">Mestre</InputLabel>
+              <Select
+                labelId="mestre-label"
+                id="mestreId"
+                name="mestreId"
+                value={editCampanha.mestreId}
+                onChange={handleInputChange}
+                label="Mestre"
+              >
+                {mestres.map((mestre) => (
+                  <MenuItem key={mestre.id} value={mestre.id}>
+                    {mestre.nome}
+                  </MenuItem>
+                ))}
+              </Select>
+            </FormControl>
+            <Button variant="contained" color="primary" type="submit">
+              Atualizar
+            </Button>
+          </Box>
+
           <TabContext value={value}>
             <Box sx={{ borderBottom: 1, borderColor: 'divider' }}>
               <TabList onChange={handleChange} aria-label="tabs">
@@ -118,12 +150,17 @@ function EditarCampanha() {
               </TabList>
             </Box>
             <TabPanel value="1">
-              {' '}
-              <PersonagemCampanha />
+              <PersonagemCampanha campanhaId={id} />
             </TabPanel>
-            <TabPanel value="2">Histórias</TabPanel>
-            <TabPanel value="3">NPCs</TabPanel>
-            <TabPanel value="4">Locais</TabPanel>
+            <TabPanel value="2">
+              <HistoriaCampanha campanhaId={id} />
+            </TabPanel>
+            <TabPanel value="3">
+              <NpcCampanha campanhaId={id} />
+            </TabPanel>
+            <TabPanel value="4">
+              <LocalCampanha campanhaId={id} />
+            </TabPanel>
           </TabContext>
         </Box>
       </FullScreenBackground>

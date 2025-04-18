@@ -3,11 +3,9 @@ import {
   Typography,
   Button,
   TextField,
-  Select,
-  MenuItem,
-  FormControl,
-  InputLabel,
   Box,
+  Grid,
+  Avatar,
   Table,
   TableBody,
   TableCell,
@@ -15,75 +13,60 @@ import {
   TableHead,
   TableRow,
   Paper,
-  Avatar,
-  Grid,
   IconButton,
 } from '@mui/material';
-import UsuarioService from '../../services/UsuarioService';
 import { useParams, useNavigate, Link } from 'react-router-dom';
-import PersonagemService from '../../services/PersonagemService';
+import NpcService from '../../services/NpcService';
 import FullScreenBackground from '../FullScreenBackground/FullScreenBackground';
 import backgroundFundo from '../../images/register.svg';
 import Menu from '../Menu/Menu';
-import Ficha3DeTService from '../../services/Ficha3detService';
 import ImageService from '../../services/ImageService';
-import Ficha3detService from '../../services/Ficha3detService';
+import Ficha3DeTService from '../../services/Ficha3detService';
 import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 
-function EditarPersonagemCampanha() {
-  const { id, personagemId } = useParams();
+function EditarNpcCampanha() {
+  const { id, npcId } = useParams();
   const navigate = useNavigate();
-  const [editPersonagem, setEditPersonagem] = useState({ nome: '', jogadorId: '', jogadorNome: '', imagePath: '' });
-  const [jogadores, setJogadores] = useState([]);
-  const [fichas3DeT, setFichas3DeT] = useState([]);
+  const [editNpc, setEditNpc] = useState({ nome: '', descricao: '', imagePath: '' });
   const [selectedImage, setSelectedImage] = useState(null);
+  const [fichas3DeT, setFichas3DeT] = useState([]);
 
   useEffect(() => {
-    fetchPersonagem();
-    fetchJogadores();
+    fetchNpc();
     fetchFicha3DeT();
-  }, [personagemId]);
+  }, [npcId]);
+
+  const fetchNpc = async () => {
+    try {
+      const response = await NpcService.getById(npcId);
+      setEditNpc(response.data);
+    } catch (error) {
+      console.error('Erro ao buscar NPC:', error);
+    }
+  };
 
   const fetchFicha3DeT = async () => {
     try {
-      const response = await Ficha3DeTService.getByPersonagemId(personagemId);
+      const response = await Ficha3DeTService.getByNpcId(npcId);
       setFichas3DeT(response.data);
     } catch (error) {
-      console.error('Erro ao buscar fichas 3DeT:', error);
-    }
-  };
-
-  const fetchPersonagem = async () => {
-    try {
-      const response = await PersonagemService.getById(personagemId);
-      setEditPersonagem(response.data);
-    } catch (error) {
-      console.error('Erro ao buscar personagem:', error);
-    }
-  };
-
-  const fetchJogadores = async () => {
-    try {
-      const response = await UsuarioService.getAllJogadores();
-      setJogadores(response.data);
-    } catch (error) {
-      console.error('Erro ao buscar jogadores:', error);
+      console.error('Erro ao buscar fichas 3DeT do NPC:', error);
     }
   };
 
   const handleInputChange = (event) => {
-    setEditPersonagem({ ...editPersonagem, [event.target.name]: event.target.value });
+    setEditNpc({ ...editNpc, [event.target.name]: event.target.value });
   };
 
-  const handleUpdatePersonagem = async () => {
+  const handleUpdateNpc = async () => {
     try {
-      await PersonagemService.update(personagemId, editPersonagem);
+      await NpcService.update(npcId, editNpc);
       if (selectedImage) {
         await uploadImage();
       }
       navigate(`/campanha/editar/${id}`);
     } catch (error) {
-      console.error('Erro ao atualizar personagem:', error);
+      console.error('Erro ao atualizar NPC:', error);
     }
   };
 
@@ -95,13 +78,13 @@ function EditarPersonagemCampanha() {
     if (!selectedImage) return;
 
     const formData = new FormData();
-    formData.append('EntityType', 'personagem');
-    formData.append('EntityId', personagemId);
+    formData.append('EntityType', 'npc');
+    formData.append('EntityId', npcId);
     formData.append('File', selectedImage);
 
     try {
       const response = await ImageService.uploadImage(formData);
-      setEditPersonagem({ ...editPersonagem, imagePath: response.data.imagePath });
+      setEditNpc({ ...editNpc, imagePath: response.data.imagePath });
       setSelectedImage(null);
     } catch (error) {
       console.error('Erro ao fazer upload da imagem:', error);
@@ -110,7 +93,7 @@ function EditarPersonagemCampanha() {
 
   const handleDeleteFicha3det = async (ficha3detId) => {
     try {
-      await Ficha3detService.delete(ficha3detId);
+      await Ficha3DeTService.delete(ficha3detId);
       fetchFicha3DeT();
     } catch (error) {
       console.error('Erro ao excluir ficha 3det:', error);
@@ -127,7 +110,7 @@ function EditarPersonagemCampanha() {
       <FullScreenBackground imageUrl={backgroundFundo}>
         <Box
           sx={{
-            width: '100%',
+            width: '80% !important',
             margin: '20px auto',
             padding: 4,
             bgcolor: 'rgba(255, 255, 255, 0.9)',
@@ -139,51 +122,44 @@ function EditarPersonagemCampanha() {
             <IconButton component={Link} to={getVoltarLink()} color="primary">
               <ArrowBackIcon />
             </IconButton>
-            Editar Personagem
+            Editar NPC
           </Typography>
 
           <form
             onSubmit={(e) => {
               e.preventDefault();
-              handleUpdatePersonagem();
+              handleUpdateNpc();
             }}
           >
-            <Grid container spacing={65} alignItems="center" marginBottom={2} marginRight={10}>
+            <Grid container spacing={2} alignItems="center" marginBottom={2} marginRight={10}>
               <Grid item xs={12} md={6}>
                 <TextField
                   label="Nome"
                   name="nome"
-                  value={editPersonagem.nome}
+                  value={editNpc.nome}
                   onChange={handleInputChange}
                   fullWidth
                   margin="normal"
                   size="small"
+                  required
                 />
-                <FormControl fullWidth margin="normal" size="small">
-                  <InputLabel id="jogador-label">Jogador</InputLabel>
-                  <Select
-                    labelId="jogador-label"
-                    id="jogadorId"
-                    name="jogadorId"
-                    value={editPersonagem.jogadorId}
-                    onChange={handleInputChange}
-                    label="Jogador"
-                  >
-                    {jogadores.map((jogador) => (
-                      <MenuItem key={jogador.id} value={jogador.id}>
-                        {jogador.nome}
-                      </MenuItem>
-                    ))}
-                  </Select>
-                </FormControl>
+                <TextField
+                  label="Descrição"
+                  name="descricao"
+                  value={editNpc.descricao}
+                  onChange={handleInputChange}
+                  fullWidth
+                  multiline
+                  rows={4}
+                  margin="normal"
+                  size="small"
+                />
               </Grid>
               <Grid item xs={12} md={6} sx={{ display: 'flex', justifyContent: 'flex-end' }}>
                 <Avatar
-                  alt={editPersonagem.nome}
+                  alt={editNpc.nome}
                   src={
-                    editPersonagem.imagePath
-                      ? `${process.env.REACT_APP_API_URL.replace('/api', '')}/${editPersonagem.imagePath}`
-                      : ''
+                    editNpc.imagePath ? `${process.env.REACT_APP_API_URL.replace('/api', '')}/${editNpc.imagePath}` : ''
                   }
                   sx={{ width: 120, height: 120, borderRadius: '8px' }}
                 />
@@ -211,19 +187,21 @@ function EditarPersonagemCampanha() {
             </Box>
 
             <Button variant="contained" color="primary" type="submit" sx={{ mt: 3 }}>
-              Atualizar Personagem
+              Atualizar NPC
             </Button>
           </form>
+
           <Box mt={2}>
             <Button
               variant="outlined"
               color="primary"
               component={Link}
-              to={`/campanha/editar/${id}/personagem/${personagemId}/ficha3det/criar`}
+              to={`/campanha/editar/${id}/npc/${npcId}/ficha3det/criar`}
             >
               Adicionar Ficha 3DeT
             </Button>
           </Box>
+
           <Typography variant="h5" component="h2" gutterBottom sx={{ mt: 4 }}>
             Fichas 3DeT
           </Typography>
@@ -254,7 +232,7 @@ function EditarPersonagemCampanha() {
                         variant="outlined"
                         color="primary"
                         component={Link}
-                        to={`/campanha/editar/${id}/personagem/${personagemId}/ficha3det/${ficha.id}/editar`}
+                        to={`/campanha/editar/${id}/npc/${npcId}/ficha3det/${ficha.id}/editar`} // Crie esta rota
                       >
                         Editar
                       </Button>
@@ -273,4 +251,4 @@ function EditarPersonagemCampanha() {
   );
 }
 
-export default EditarPersonagemCampanha;
+export default EditarNpcCampanha;

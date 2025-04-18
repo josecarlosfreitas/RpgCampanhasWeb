@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
-import { Box, Typography, TextField, Button, Grid, Paper, Divider, Tab } from '@mui/material';
+import { Box, Typography, TextField, Button, Grid, Paper, Divider, Tab, IconButton } from '@mui/material';
 import { TabContext, TabList, TabPanel } from '@mui/lab';
-import { useParams, useNavigate } from 'react-router-dom';
+import { useParams, useNavigate, Link } from 'react-router-dom';
 import Ficha3detService from '../../services/Ficha3detService';
 import backgroundImage from '../../images/register.svg';
 
@@ -10,10 +10,12 @@ import PersonIcon from '@mui/icons-material/Person';
 import AutoFixHighIcon from '@mui/icons-material/AutoFixHigh';
 import MenuBookIcon from '@mui/icons-material/MenuBook';
 import SportsKabaddiIcon from '@mui/icons-material/SportsKabaddi';
+import ArrowBackIcon from '@mui/icons-material/ArrowBack';
+
 import Menu from '../Menu/Menu';
 
 function CriarFicha3det() {
-  const { id, personagemId } = useParams();
+  const { id, personagemId, npcId } = useParams();
   const navigate = useNavigate();
   const [tab, setTab] = useState('1');
 
@@ -34,8 +36,8 @@ function CriarFicha3det() {
     vantagens: '',
     historia: '',
     desvantagens: '',
-    personagemId: parseInt(personagemId, 10),
-    npcId: null,
+    personagemId: personagemId ? parseInt(personagemId, 10) : null,
+    npcId: npcId ? parseInt(npcId, 10) : null,
   });
 
   const handleChangeTab = (event, newValue) => setTab(newValue);
@@ -48,14 +50,49 @@ function CriarFicha3det() {
   const handleSalvarFicha = async () => {
     try {
       await Ficha3detService.create(ficha);
-      navigate(`/campanha/editar/${id}/personagem/${personagemId}`);
+      if (personagemId) {
+        navigate(`/campanha/editar/${id}/personagem/${personagemId}`);
+      } else if (npcId) {
+        navigate(`/campanha/editar/${id}/npc/${npcId}`);
+      }
     } catch (error) {
       console.error('Erro ao criar ficha 3DeT:', error);
     }
   };
 
   const handleCancelar = () => {
-    navigate(`/campanha/editar/${id}/personagem/${personagemId}`);
+    if (personagemId) {
+      navigate(`/campanha/editar/${id}/personagem/${personagemId}`);
+    } else if (npcId) {
+      navigate(`/campanha/editar/${id}/npc/${npcId}`);
+    }
+  };
+
+  const getTitulo = () => {
+    if (personagemId) {
+      return 'Ficha de Personagem - 3D&T';
+    } else if (npcId) {
+      return 'Ficha de NPC - 3D&T';
+    }
+    return 'Criar Ficha 3D&T';
+  };
+
+  const getNomeLabel = () => {
+    if (personagemId) {
+      return 'Nome do Personagem';
+    } else if (npcId) {
+      return 'Nome do NPC';
+    }
+    return 'Nome';
+  };
+
+  const getVoltarLink = () => {
+    if (personagemId) {
+      return `/campanha/editar/${id}/personagem/${personagemId}`;
+    } else if (npcId) {
+      return `/campanha/editar/${id}/npc/${npcId}`;
+    }
+    return `/campanha/editar/${id}`;
   };
 
   return (
@@ -86,19 +123,16 @@ function CriarFicha3det() {
           }}
         >
           <Typography variant="h4" gutterBottom align="center" sx={{ fontFamily: 'serif', fontWeight: 'bold' }}>
-            Ficha de Personagem - 3D&T Alpha
+            <IconButton component={Link} to={getVoltarLink()} color="primary">
+              <ArrowBackIcon />
+            </IconButton>
+            {getTitulo()}
           </Typography>
 
           {/* Cabeçalho com nome e pontos */}
           <Grid container spacing={2} sx={{ mb: 3 }}>
             <Grid item xs={9}>
-              <TextField
-                fullWidth
-                label="Nome do Personagem"
-                name="nome"
-                value={ficha.nome}
-                onChange={handleInputChange}
-              />
+              <TextField fullWidth label={getNomeLabel()} name="nome" value={ficha.nome} onChange={handleInputChange} />
             </Grid>
             <Grid item xs={3}>
               <TextField fullWidth label="Pontos" name="pontos" value={ficha.pontos} onChange={handleInputChange} />
@@ -240,15 +274,15 @@ function CriarFicha3det() {
             <TabPanel value="4">
               <Divider sx={{ my: 2 }} />
               <Typography variant="body2" sx={{ whiteSpace: 'pre-line' }}>
-                <strong>Passo 1 • Iniciativa:</strong>{' '}
+                <strong>Passo 1 • Iniciativa:</strong>
                 {` cada combatente rola um dado e acrescenta ao resultado sua Habilidade. Inclua +1 por Aceleração ou +2 por Teleporte (não cumulativos), quando houver. Combatentes com iniciativa mais alta agem primeiro. Em caso de empate, combatentes com Habilidade mais alta agem primeiro. Se mesmo assim houver empate, os combatentes agem ao mesmo tempo. Este teste é feito apenas uma vez, no primeiro turno do combate: o valor de iniciativa é mantido até o final da luta.\n\n`}
-                <strong>Passo 2 • Força de Ataque (FA):</strong>{' '}
+                <strong>Passo 2 • Força de Ataque (FA):</strong>
                 {` os personagens escolhem seus alvos e fazem seus ataques ou manobras, cada um em sua iniciativa. A Força de Ataque de cada um será igual a H+F+1d (para ataques corpo-a-corpo) ou H+PdF+1d (para ataques à longa distância), à escolha do jogador. Essa escolha deve ser feita antes da rolagem.\n\n`}
-                <strong>Exemplo: </strong>{' '}
+                <strong>Exemplo: </strong>
                 {`um combatente com H4, F3 e PdF1 rola um dado e consegue um 2. Ele terá uma Força de Ataque 9 (4+3+2) para atacar corpo-a-corpo e FA 7 (4+1+2) para atacar à distância.\n\n`}
-                <strong>Passo 3 • Força de Defesa (FD):</strong>{' '}
+                <strong>Passo 3 • Força de Defesa (FD):</strong>
                 {` a Força de Defesa da vítima será igual a H+A+1d. Subtraia esse valor da FA do atacante. O resultado final será a quantidade de Pontos de Vida perdidos pela vítima.\n\n`}
-                <strong>Exemplo: </strong>{' '}
+                <strong>Exemplo: </strong>
                 {`um atacante com H2 e F3 rola um dado, consegue um 5 e ataca com FA 10. Seu alvo tem H2, A1 e rola um 3, defendendo-se com FD 6. 10-6=4. A vítima perde 4 PVs por este ataque. Caso a FD final do alvo seja igual ou superior à FA final do atacante, nenhum dano é provocado.`}
               </Typography>
             </TabPanel>

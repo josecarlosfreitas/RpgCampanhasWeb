@@ -5,6 +5,7 @@ import Usuarioservice from '../../services/UsuarioService';
 import { useNavigate } from 'react-router-dom';
 import FullScreenBackground from '../FullScreenBackground/FullScreenBackground';
 import backgroundFundo from '../../images/fundoCampanha.png';
+import Menu from '../Menu/Menu';
 
 function CriarCampanha() {
   const [newCampanha, setNewCampanha] = useState({ nome: '', descricao: '', mestreId: '' });
@@ -38,55 +39,58 @@ function CriarCampanha() {
   };
 
   return (
-    <FullScreenBackground imageUrl={backgroundFundo}>
-      <Typography variant="h4" component="h1" gutterBottom>
-        Criar Campanha
-      </Typography>
-      <Box
-        component="form"
-        onSubmit={(e) => {
-          e.preventDefault();
-          handleCreateCampanha();
-        }}
-      >
-        <TextField
-          label="Nome"
-          name="nome"
-          value={newCampanha.nome}
-          onChange={handleInputChange}
-          fullWidth
-          margin="normal"
-        />
-        <TextField
-          label="Descrição"
-          name="descricao"
-          value={newCampanha.descricao}
-          onChange={handleInputChange}
-          fullWidth
-          margin="normal"
-        />
-        <FormControl fullWidth margin="normal">
-          <InputLabel id="mestre-label">Mestre</InputLabel>
-          <Select
-            labelId="mestre-label"
-            id="mestreId"
-            name="mestreId"
-            value={newCampanha.mestreId}
+    <>
+      <Menu />
+      <FullScreenBackground imageUrl={backgroundFundo}>
+        <Typography variant="h4" component="h1" gutterBottom>
+          Criar Campanha
+        </Typography>
+        <Box
+          component="form"
+          onSubmit={(e) => {
+            e.preventDefault();
+            handleCreateCampanha();
+          }}
+        >
+          <TextField
+            label="Nome"
+            name="nome"
+            value={newCampanha.nome}
             onChange={handleInputChange}
-            label="Mestre"
-          >
-            {mestres.map((mestre) => (
-              <MenuItem key={mestre.id} value={mestre.id}>
-                {mestre.nome}
-              </MenuItem>
-            ))}
-          </Select>
-        </FormControl>
-        <Button variant="contained" color="primary" type="submit">
-          Criar
-        </Button>
-      </Box>
-    </FullScreenBackground>
+            fullWidth
+            margin="normal"
+          />
+          <TextField
+            label="Descrição"
+            name="descricao"
+            value={newCampanha.descricao}
+            onChange={handleInputChange}
+            fullWidth
+            margin="normal"
+          />
+          <FormControl fullWidth margin="normal">
+            <InputLabel id="mestre-label">Mestre</InputLabel>
+            <Select
+              labelId="mestre-label"
+              id="mestreId"
+              name="mestreId"
+              value={newCampanha.mestreId}
+              onChange={handleInputChange}
+              label="Mestre"
+            >
+              {mestres.map((mestre) => (
+                <MenuItem key={mestre.id} value={mestre.id}>
+                  {mestre.nome}
+                </MenuItem>
+              ))}
+            </Select>
+          </FormControl>
+          <Button variant="contained" color="primary" type="submit">
+            Criar
+          </Button>
+        </Box>
+      </FullScreenBackground>
+    </>
   );
 }
 

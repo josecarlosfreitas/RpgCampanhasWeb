@@ -9,6 +9,10 @@ import EditarCampanha from './components/Campanha/EditarCampanha';
 import EditarPersonagemCampanha from './components/PersonagemCampanha/EditarPersonagemCampanha';
 import CriarFicha3det from './components/Ficha3det/CriarFicha3det';
 import EditarFicha3det from './components/Ficha3det/EditarFicha3det';
+import CriarHistoriaCampanha from './components/HistoriaCampanha/CriarHistoriaCampanha';
+import EditarHistoriaCampanha from './components/HistoriaCampanha/EditarHistoriaCampanha';
+import EditarNpcCampanha from './components/NpcCampanha/EditarNpcCampanha';
+import EditarLocalCampanha from './components/LocalCampanha/EditarLocalCampanha';
 
 function App() {
   return (
@@ -26,6 +30,12 @@ function App() {
           path="/campanha/editar/:id/personagem/:personagemId/ficha3det/:fichaId/editar"
           element={<EditarFicha3det />}
         />
+        <Route path="/campanha/editar/:id/historia/criar" element={<CriarHistoriaCampanha />} />
+        <Route path="/campanha/editar/:id/historia/:historiaId/editar" element={<EditarHistoriaCampanha />} />
+        <Route path="/campanha/editar/:id/npc/:npcId" element={<EditarNpcCampanha />} />
+        <Route path="/campanha/editar/:id/npc/:npcId/ficha3det/criar" element={<CriarFicha3det />} />
+        <Route path="/campanha/editar/:id/npc/:npcId/ficha3det/:fichaId/editar" element={<EditarFicha3det />} />
+        <Route path="/campanha/editar/:id/local/:localId" element={<EditarLocalCampanha />} />
       </Routes>
     </Router>
   );

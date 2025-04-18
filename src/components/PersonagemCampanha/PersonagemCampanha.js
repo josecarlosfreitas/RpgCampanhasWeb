@@ -19,6 +19,7 @@ import {
   MenuItem,
   FormControl,
   InputLabel,
+  Box,
 } from '@mui/material';
 import UsuarioService from '../../services/UsuarioService';
 import { Link, useParams } from 'react-router-dom';
@@ -94,7 +95,7 @@ function PersonagemCampanha() {
   };
 
   return (
-    <Container maxWidth="md">
+    <Box>
       <Typography variant="h4" component="h2" gutterBottom>
         Gerenciamento de Personagens
       </Typography>
@@ -170,7 +171,7 @@ function PersonagemCampanha() {
           </Button>
         </DialogActions>
       </Dialog>
-    </Container>
+    </Box>
   );
 }
 

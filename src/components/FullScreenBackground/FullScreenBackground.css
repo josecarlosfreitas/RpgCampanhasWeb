@@ -26,10 +26,3 @@
   flex-direction: column;
   justify-content: center;
 }
-
-.content h1,
-.content label,
-.content input,
-.content .MuiSelect-select {
-  color: white;
-}
